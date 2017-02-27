@@ -1,5 +1,3 @@
-﻿# Set of Stand Alone Bash files for Automation
+﻿# Set of Standalone Bash files for Automation of comon tasks
 
-Automation for comon tasks
-
-AutoWaka.Sh => Automate WPA gathering based on airolib.
+- AutoWaka.Sh => Automate WPA gathering based on airolib and pyrit.
