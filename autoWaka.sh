@@ -2,12 +2,12 @@
 echo "           AUTO WIFI With airolib";
 echo "           ======================";
 echo "All variables are strict - failing is in your hands";
-echo "What you want to call this:";
-read Proj;
+echo "This program makes use of Pyrit and the AirodunpLib";
+read -p "What you want to call this: " Proj;
 read -p "What Interface will you use: " Iface;
 mon=$Iface'mon';
 read -p "What is the friendly name of the AP: " ESSID;
-read -p "what is the MAc of the AP: " BSSID;
+read -p "what is the MAC of the AP: " BSSID;
 read -p "What Channel is the AP on: " Chan;
 
 #Lets Play ball
@@ -63,14 +63,20 @@ while true; do
 	esac
 done
 
+echo "starting Pyrit cap analyze"
+
+read -p "do you have a wordlist ready? Path: " dic;
+#dic=../wordlist/export.db
+
 cd ../$Proj;
-result='find *.cap' ;
-pyrit -r $result analyze;
+cap='find *.cap' ;
 
-#read -p "Location of a dictionary" dic;
+echo "ready to analyze  " $cap
+pyrit -r $cap analyze;
 
 
-dic=../wordlist/export.db
+
+
 
 gnome-terminal -x sh -c "
         sleep 3;
