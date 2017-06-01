@@ -65,7 +65,7 @@ while true; do
 done
 
 echo "looking for wordlist and starting attack"
-
+#default in KALI LINUX /usr/share/john/password.lst
 
 dic=wordlist/export.db
 
@@ -83,12 +83,14 @@ if [-e wordlist/*.db ]; then
 		read -n1 -p "Press Enter to Exit" key;
 	"
 else
-	read -p "do you have a wordlist ready? Path: " dic;
 
-gnome-terminal -x sh -c "
-        sleep 3;
-        aircrack-ng -w  $dic -b $BSSID $cap;
+	 dic=/usr/share/john/password.lst;
+
+	gnome-terminal -x sh -c "
+	        sleep 3;
+		aircrack-ng -w  $dic -b $BSSID $cap;
         "
+
 echo "Hope you were lucky!!!!"
 read -n1 -p "Press Enter to Exit" key;
 
