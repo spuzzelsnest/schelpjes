@@ -69,7 +69,7 @@ echo "looking for wordlist and starting attack"
 
 dic=wordlist/export.db
 
-if [-f $dic ]; then
+if [-e wordlist/*.db ]; then
 	echo "Loading dictionary"
 
 	gnome-terminal -x sh -c "
@@ -85,7 +85,6 @@ if [-f $dic ]; then
 	"
 else
 	read -p "do you have a wordlist ready? Path: " dic;
-fi
 
 gnome-terminal -x sh -c "
         sleep 3;
@@ -93,3 +92,5 @@ gnome-terminal -x sh -c "
         "
 echo "Hope you were lucky!!!!"
 read -n1 -p "Press Enter to Exit" key;
+
+fi
